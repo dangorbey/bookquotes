@@ -13,8 +13,11 @@ export default function Home() {
   // Function to process the text value
   const processTextValue = () => {
     const regex = /\*\*(.*?)\*\*/g;
-    return textValue.replace(regex, (_, matchedText) => `<span class="highlight">${matchedText}</span>`);
+    let processed = textValue.replace(regex, (_, matchedText) => `<span class="highlight">${matchedText}</span>`);
+    processed = processed.replace(/\n/g, '<br />');
+    return processed;
   }
+
 
   const processedValue = processTextValue();
 
