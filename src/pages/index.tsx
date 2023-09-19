@@ -30,7 +30,7 @@ export default function Home() {
         .then((dataUrl) => {
           const link = document.createElement('a');
           link.href = dataUrl;
-          link.download = 'exported_div.png';
+          link.download = 'your-quote.png';
           link.click();
         })
         .catch((error) => {
