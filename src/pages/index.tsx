@@ -1,6 +1,8 @@
 import Head from "next/head";
 // import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
+// import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
@@ -18,8 +20,24 @@ export default function Home() {
     return processed;
   }
 
-
   const processedValue = processTextValue();
+
+
+  const divRef = useRef<HTMLDivElement>(null);
+  const handleExport = () => {
+    if (divRef.current) {
+      htmlToImage.toPng(divRef.current)
+        .then((dataUrl) => {
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = 'exported_div.png';
+          link.click();
+        })
+        .catch((error) => {
+          console.error('Error exporting to PNG:', error);
+        });
+    }
+  };
 
   return (
     <>
@@ -35,10 +53,13 @@ export default function Home() {
           {/* <div className="md:max-w-2xl"> */}
           <h1 className="text-xl font-bold">Quote Generator: </h1>
           <div className="h-4"></div>
-          <div className="border-amber-100 border-2 w-80 aspect-[9/11] p-8 flex flex-col items-center justify-center">
+          <div ref={divRef} className="border-amber-100 border-2 bg-white w-80 aspect-[9/11] p-8 flex flex-col items-center justify-center">
             <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
           </div>
           <div className="h-4"></div>
+
+          <button className="font-bold p-2 bg-amber-100" onClick={handleExport}>Export to PNG</button>
+          <div className="h-2"></div>
           <div className="w-80">
             <div className=" py-2">
               <p className="font-bold">Paste quote below:</p>
@@ -52,6 +73,7 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Type something..."
             />
+
           </div>
         </div>
       </main >
