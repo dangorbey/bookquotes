@@ -63,7 +63,7 @@ export default function Home() {
           {/* <div className="md:max-w-2xl"> */}
           <h1 className="text-xl font-bold">Quote Generator: </h1>
           <div className="h-4"></div>
-          <div ref={divRef} className="border-amber-100 border-2 bg-white w-80 aspect-[9/11] p-8 flex flex-col items-center justify-center">
+          <div ref={divRef} className="border-amber-100 border-2 bg-white w-80 aspect-[4/5] p-8 flex flex-col items-center justify-center">
             <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
           </div>
           <div className="h-4"></div>
