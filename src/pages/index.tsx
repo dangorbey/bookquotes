@@ -30,7 +30,8 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center p-4">
           {/* <div className="md:max-w-2xl"> */}
-          <h1 className="text-xl font-bold p-2">Quote Generator: </h1>
+          <h1 className="text-xl font-bold">Quote Generator: </h1>
+          <div className="h-4"></div>
           <div className="border-amber-100 border-2 bg-amber-50 w-80 aspect-[9/11] p-8 flex flex-col items-center justify-center">
             <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
           </div>
