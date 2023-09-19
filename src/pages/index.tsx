@@ -3,6 +3,20 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function Home() {
+  const [textValue, setTextValue] = useState<string>('');
+
+  // Handle input change
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    setTextValue(event.target.value);
+  };
+
+  // Function to process the text value
+  const processTextValue = () => {
+    const regex = /\*\*(.*?)\*\*/g;
+    return textValue.replace(regex, (_, matchedText) => `<span class="highlight">${matchedText}</span>`);
+  }
+
+  const processedValue = processTextValue();
 
   return (
     <>
@@ -12,47 +26,24 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="https://use.typekit.net/fhn2cew.css"></link>
       </Head>
-      <main id="test" className="flex min-h-screen flex-col items-center justify-center bg-amber-50">
+      <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center p-4">
           {/* <div className="md:max-w-2xl"> */}
+          <h1 className="text-xl font-bold p-4">Quote Generator: </h1>
+          <div className="border-amber-100 border-2 bg-amber-50 w-80 aspect-[9/16] p-8 flex flex-col items-center justify-center">
+            <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
+          </div>
+          <div className="h-4"></div>
           <div className="w-80">
-            <h1 className="text-xl font-bold">Your Quote: </h1>
-            <div>
-              And of course, said the Queen, 'it goes on,
-              not a week passing without something of interest,
-              a scandal, a cover-up or even a war. And since this
-              is one's birthday you must not even think of looking
-              peeved' - the prime minister was studying the
-              ceiling and the home secretary the carpet - 'for
-              one has a long perspective and it was ever thus.
-              <span className="highlight"> At eighty things do not occur; they recur.</span>
-            </div>
-            <div className="h-5"></div>
-            <hr></hr>
-            <div className="h-5"></div>
-            <h1 className="text-xl font-bold">Your Quote: </h1>
-            <div>
-              ...it is essential to begin by reckoning with the fact
-              that one of the foundations of Western culture is leisure.
-              That much, at least, can be learnt from the first chapter
-              of Aristotle's Metaphysics. And even the history of the word
-              attests the fact:
-              <span className="highlight"> for leisure in Greek is skole,
-                and in Latin scola, the English "school."</span>
-            </div>
-            <div className="h-5"></div>
-            <hr></hr>
-            <div className="h-5"></div>
-            <h1 className="text-xl font-bold">Your Quote: </h1>
-            <div>
-              Acedia was reckoned among the vitia capitalia, as one of
-              the seven capital or cardinal sins, for they were not
-              called "capital" because of the best-known rendering of caput;
-              <span className="highlight"> caput certainly means "head", but it also means "source" or
-                "spring" -and that is the meaning in this case. </span>They are sins
-              from which other faults follow "naturally" one is tempted to
-              say, as from a source.
-            </div>
+            <p className="font-bold py-2">Paste quote below:</p>
+            {/* <textarea className="border-amber-100 border-2 w-full p-4"></textarea> */}
+            {/* Render the input */}
+            <textarea
+              className="border-amber-100 border-2 w-full p-4"
+              value={textValue}
+              onChange={handleInputChange}
+              placeholder="Type something..."
+            />
           </div>
         </div>
       </main >
