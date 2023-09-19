@@ -18,19 +18,20 @@ export default function Home() {
     let processed = textValue.replace(regex, (_, matchedText) => `<span class="highlight">${matchedText}</span>`);
     processed = processed.replace(/\n/g, '<br />');
     return processed;
-  }
+  };
 
   const processedValue = processTextValue();
 
-
+  // Handle PNG export
   const divRef = useRef<HTMLDivElement>(null);
+
   const handleExport = () => {
     if (divRef.current) {
       htmlToImage.toPng(divRef.current)
         .then((dataUrl) => {
           const link = document.createElement('a');
           link.href = dataUrl;
-          link.download = 'your-quote.png';
+          link.download = "Quote_" + getFilenameFromInput();
           link.click();
         })
         .catch((error) => {
@@ -38,6 +39,15 @@ export default function Home() {
         });
     }
   };
+
+  // genrate file name
+  const getFilenameFromInput = (): string => {
+    const inputValue = textValue.trim() || "default_name";
+    const words = inputValue.split(" ").slice(0, 3).join("_");
+    const sanitizedFilename = words.replace(/[^a-zA-Z0-9_]/g, "");
+    return `${sanitizedFilename}.png`;
+  }
+
 
   return (
     <>
@@ -71,7 +81,7 @@ export default function Home() {
               className="border-amber-100 border-2 w-full p-4"
               value={textValue}
               onChange={handleInputChange}
-              placeholder="Type something..."
+              placeholder="Your quote here..."
             />
 
           </div>
