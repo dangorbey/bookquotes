@@ -32,7 +32,7 @@ export default function Home() {
   // Function to process the text value
   const processTextValue = () => {
     const regex = /(\*\*.*?\*\*)|([^\*]+)/g;
-    const matches = textValue.match(regex) || [];
+    const matches = textValue.match(regex) ?? [];
 
     return matches.map((segment, index) => {
       if (segment.startsWith('**') && segment.endsWith('**')) {
@@ -61,7 +61,7 @@ export default function Home() {
     });
   };
 
-  const processedValue = processTextValue();
+  // const processedValue = processTextValue();
 
   // Handle PNG export
   const divRef = useRef<HTMLDivElement>(null);
