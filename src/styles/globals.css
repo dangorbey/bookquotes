@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 * {
-  font-family: "baskerville-display-pt", serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  /* letter-spacing: .1em; */
 }
 
 .highlight {
@@ -14,7 +15,9 @@
       rgba(255, 224, 0, 0.1));
   color: black;
   font-weight: 500;
-  /* -webkit-text-stroke: .3px black; */
+  letter-spacing: 0.5px;
+
+  -webkit-text-stroke: .25px black;
 }
 
 /* #test {
