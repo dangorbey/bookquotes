@@ -1,11 +1,28 @@
 import Head from "next/head";
-// import Link from "next/link";
 import { useRef, useState } from "react";
-// import html2canvas from 'html2canvas';
 import * as htmlToImage from 'html-to-image';
+
+type ButtonData = {
+  label: string;
+  fillColor: string;
+  borderLight: string;
+  borderDark: string;
+}
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
+  const [selectedButton, setSelectedButton] = useState<string>("amber");
+
+  const buttons: ButtonData[] = [
+    { label: "amber", fillColor: "bg-amber-300", borderLight: "border-amber-300", borderDark: "border-amber-500" },
+    { label: "rose", fillColor: "bg-rose-300", borderLight: "border-rose-300", borderDark: "border-rose-500" },
+    { label: "fuchsia", fillColor: "bg-fuchsia-300", borderLight: "border-fuchsia-300", borderDark: "border-fuchsia-500" },
+    { label: "sky", fillColor: "bg-sky-300", borderLight: "border-sky-300", borderDark: "border-sky-500" },
+    { label: "teal", fillColor: "bg-teal-300", borderLight: "border-teal-300", borderDark: "border-teal-500" },
+    { label: "green", fillColor: "bg-green-300", borderLight: "border-green-300", borderDark: "border-green-500" },
+  ];
+
+  const selectedFillColor = buttons.find(button => button.label === selectedButton)?.fillColor;
 
   // Handle input change
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -14,10 +31,34 @@ export default function Home() {
 
   // Function to process the text value
   const processTextValue = () => {
-    const regex = /\*\*(.*?)\*\*/g;
-    let processed = textValue.replace(regex, (_, matchedText) => `<span class="highlight">${matchedText}</span>`);
-    processed = processed.replace(/\n/g, '<br />');
-    return processed;
+    const regex = /(\*\*.*?\*\*)|([^\*]+)/g;
+    const matches = textValue.match(regex) || [];
+
+    return matches.map((segment, index) => {
+      if (segment.startsWith('**') && segment.endsWith('**')) {
+        // return <span key={index} className={`${selectedFillColor} rounded-tl-md rounded-br-md`}>{segment.slice(2, -2)}</span>;
+        // bg-gradient-to-r from-amber-300 via-amber-300/[.5] to-amber-300/[.7] 
+        return (
+          <span
+            key={index}
+            id="highlight"
+            className={
+              `${selectedFillColor}
+              rounded-tl-md 
+              rounded-br-md
+              text`
+            }>
+            {segment.slice(2, -2)}
+          </span>
+        );
+      }
+      return segment.split('\n').map((line, lineIndex) => (
+        lineIndex === 0 ? line : <>
+          <br key={`${index}-${lineIndex}`} />
+          {line}
+        </>
+      ));
+    });
   };
 
   const processedValue = processTextValue();
@@ -49,6 +90,8 @@ export default function Home() {
   }
 
 
+
+
   return (
     <>
       <Head>
@@ -61,14 +104,14 @@ export default function Home() {
           <h1 className="text-xl font-bold">Quote Generator: </h1>
           <div className="h-4"></div>
           <div ref={divRef} className="border-amber-100 border-2 bg-white w-80 aspect-[4/5] p-8 flex flex-col items-center justify-center">
-            <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
+            <div className="w-full break-normal">{processTextValue()}</div>
           </div>
           <div className="h-4"></div>
 
           <button className="font-bold p-2 bg-amber-100" onClick={handleExport}>Export to PNG</button>
           <div className="h-2"></div>
           <div className="w-80">
-            <div className=" py-2">
+            <div className="py-2">
               <p className="font-bold">Paste quote below:</p>
               <p>Text within <span className="highlight">**two asterisks**</span> will be highlighted.</p>
             </div>
@@ -78,6 +121,27 @@ export default function Home() {
               onChange={handleInputChange}
               placeholder="Your quote here..."
             />
+          </div>
+          <div className="h-4"></div>
+          <div className="w-80">
+            <div className="py-2">
+              <p className="font-bold">Highlight Color:</p>
+            </div>
+            <div className="space-x-4">
+              {buttons.map((button) => (
+                <button
+                  key={button.label}
+                  className={`w-8 h-8 rounded-full border-2 ${selectedButton === button.label
+                    //selected
+                    ? `${button.fillColor} ${button.borderDark}`
+
+                    //not selected
+                    : `${button.fillColor} ${button.borderLight}`
+                    }`}
+                  onClick={() => setSelectedButton(button.label)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </main >
