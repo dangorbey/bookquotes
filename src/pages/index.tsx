@@ -30,13 +30,16 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center p-4">
           {/* <div className="md:max-w-2xl"> */}
-          <h1 className="text-xl font-bold p-4">Quote Generator: </h1>
-          <div className="border-amber-100 border-2 bg-amber-50 w-80 aspect-[9/12] p-8 flex flex-col items-center justify-center">
+          <h1 className="text-xl font-bold p-2">Quote Generator: </h1>
+          <div className="border-amber-100 border-2 bg-amber-50 w-80 aspect-[9/11] p-8 flex flex-col items-center justify-center">
             <div className="w-full break-normal" dangerouslySetInnerHTML={{ __html: processedValue }}></div>
           </div>
           <div className="h-4"></div>
           <div className="w-80">
-            <p className="font-bold py-2">Paste quote below:</p>
+            <div className=" py-2">
+              <p className="font-bold">Paste quote below:</p>
+              <p>Text within <span className="highlight">**two asterisks**</span> will be highlighted.</p>
+            </div>
             {/* <textarea className="border-amber-100 border-2 w-full p-4"></textarea> */}
             {/* Render the input */}
             <textarea
